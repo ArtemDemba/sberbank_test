@@ -15,9 +15,9 @@ class DateNormalizer(Normalizer):
             if isinstance(value, dict):
                 await cls.normalize(value)
             if 'дата' in key.lower():
-                tree[key] = cls.__convert_string_to_date(stringed_date=value)
+                tree[key] = await cls.__convert_string_to_date(stringed_date=value)
             if 'срок' in key.lower():
-                tree[key] = cls.__calculate_remained_term(deadline=value)
+                tree[key] = await cls.__calculate_remained_term(deadline=value)
 
     @classmethod
     async def __convert_string_to_date(cls, stringed_date: str) -> str:
@@ -91,8 +91,6 @@ class DateNormalizer(Normalizer):
                                                 word_range=splitted_deadline[left:indx + 1])
                 term_dict['days'] += number
                 left = indx
-
-        print(term_dict)
         return '_'.join(map(str, term_dict.values()))
 
     @classmethod

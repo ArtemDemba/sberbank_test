@@ -1,14 +1,21 @@
-from fastapi import APIRouter, HTTPException
+from fastapi import APIRouter
+from fastapi import Body
+from fastapi import Depends
+from fastapi import HTTPException
+from fastapi import Request
 
-from src.services.json_services import JsonService
-
+from .dependencies import ContentTypeChecker
+from src.services.interfaces import Service
+from src.middlewares import ContentTypeMiddleware
 
 process_router = APIRouter(prefix='/v1')
 
 
-@process_router.post('/v1/process_json/')
-async def process_json(tree: dict):
+@process_router.post('/process_tree/')
+async def process_tree(request: Request,
+                       tree: dict | str = Body(...)):
     try:
-        return await JsonService.parse_json(tree)
+        service = request.state.service
+        return await service.parse(tree)
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))

@@ -6,8 +6,11 @@ name = "pypi"
 [packages]
 fastapi = "*"
 uvicorn = {version = "*", extras = ["standard"]}
-num2words = "*"
 flake8 = "*"
+dateparser = "*"
+ru-word2number = "*"
+pytest = "*"
+pytest-asyncio = "*"
 
 [dev-packages]
 
