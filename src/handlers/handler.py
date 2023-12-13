@@ -3,10 +3,13 @@ from src.handlers.interfaces import IHandler
 
 class Handler(IHandler):
     @classmethod
-    async def merge_trees(cls, trees: list[dict]) -> dict:
+    def merge_trees(cls, trees: list[dict]) -> dict:
         """
         Метод, принимающий список словарей и объединяющий их в результирующий
-        словарь (дерево)
+        словарь (дерево). Если значение - словарь и такой ключ уже есть в
+        результирующем словаре, то рекурсивно обновляем словарь
+        :param: trees список деревьев
+        :return: dict
         """
         result_dict = {}
         for tree in trees:
@@ -16,9 +19,7 @@ class Handler(IHandler):
                             isinstance(value, dict) and
                             isinstance(result_dict[key], dict)
                     ):
-                        # Если значение - словарь и такой ключ уже есть в результирующем
-                        # словаре, то рекурсивно обновляем словарь
-                        result_dict[key] = await cls.merge_trees([result_dict[key], value])
+                        result_dict[key] = cls.merge_trees([result_dict[key], value])
                     else:
                         result_dict[key] = [result_dict[key], value]
                 else:
@@ -26,7 +27,7 @@ class Handler(IHandler):
         return result_dict
 
     @staticmethod
-    async def split_tree(tree: dict) -> list[dict]:
+    def split_tree(tree: dict) -> list[dict]:
         """
         Метод принимает несколько деревьев внутри словаря, разделяет их и
         возвращает список деревьев

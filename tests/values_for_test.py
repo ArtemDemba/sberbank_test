@@ -37,9 +37,9 @@ expected_dicts_for_splitting = [
 ]
 
 first_dict = {
-    'key1': 1,
+    'key1': 'value1',
     'key2': {
-        'key3': 3
+        'key3': 'value3'
     }
 }
 
@@ -53,10 +53,12 @@ second_dict = {
 }
 
 expected_result = {
-    'key1': 1,
-    'key4': 4,
+    'key1': 'value1',
     'key2': {
-        'key3': 3,
-        'key5': 5
+        'key3': 'value3',
+        'key4': 'value4'
+    },
+    'key6': {
+        'key8': 'value8'
     }
 }

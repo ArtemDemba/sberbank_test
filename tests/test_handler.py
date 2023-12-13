@@ -2,8 +2,7 @@ import pytest
 
 from src.handlers.handler import Handler
 from .values_for_test import (input_dicts_for_splitting, expected_dicts_for_splitting,
-                              first_dict, second_dict,
-                              expected_result)
+                              first_dict, second_dict, expected_result)
 
 
 @pytest.mark.parametrize('input_dict, expected_output', (
@@ -12,14 +11,15 @@ from .values_for_test import (input_dicts_for_splitting, expected_dicts_for_spli
 ))
 @pytest.mark.asyncio
 async def test_correct_splitting_dicts(input_dict, expected_output):
-    result = await Handler.split_tree(input_dict)
+    result = Handler.split_tree(input_dict)
     assert result == expected_output
 
 
-@pytest.mark.parametrize('input_dict1, input_dict2, expected_output', (
-        (first_dict, second_dict, expected_result)
+@pytest.mark.parametrize('first_input_dict, second_input_dict, expected_output', (
+    (first_dict, second_dict, expected_result),
 ))
 @pytest.mark.asyncio
-async def test_correct_merging_dicts(input_dict1, input_dict2, expected_output):
-    result = await Handler.merge_trees([first_dict, second_dict])
-    assert result == expected_result
+async def test_correct_merging_dicts(first_input_dict, second_input_dict, expected_output):
+    result = Handler.merge_trees([first_input_dict, second_input_dict])
+    assert result == expected_output
+

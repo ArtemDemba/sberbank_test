@@ -1,12 +1,8 @@
 from fastapi import APIRouter
 from fastapi import Body
-from fastapi import Depends
 from fastapi import HTTPException
 from fastapi import Request
 
-from .dependencies import ContentTypeChecker
-from src.services.interfaces import Service
-from src.middlewares import ContentTypeMiddleware
 
 process_router = APIRouter(prefix='/v1')
 

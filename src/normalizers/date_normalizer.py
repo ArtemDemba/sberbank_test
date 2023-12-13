@@ -7,20 +7,20 @@ from src.exceptions import InvalidDateException
 
 class DateNormalizer(Normalizer):
     @classmethod
-    async def normalize(cls, tree: dict) -> None:
+    def normalize(cls, tree: dict) -> None:
         """
         Нормализация дат и сроков в дереве
         """
         for key, value in tree.items():
             if isinstance(value, dict):
-                await cls.normalize(value)
+                cls.normalize(value)
             if 'дата' in key.lower():
-                tree[key] = await cls.__convert_string_to_date(stringed_date=value)
+                tree[key] = cls.__convert_string_to_date(stringed_date=value)
             if 'срок' in key.lower():
-                tree[key] = await cls.__calculate_remained_term(deadline=value)
+                tree[key] = cls.__calculate_remained_term(deadline=value)
 
     @classmethod
-    async def __convert_string_to_date(cls, stringed_date: str) -> str:
+    def __convert_string_to_date(cls, stringed_date: str) -> str:
         """
         Метод, конвертирующий даты из разных форматов в формат 'dd.mm.yyyy'
         """
@@ -31,7 +31,7 @@ class DateNormalizer(Normalizer):
         return formatted_date
 
     @classmethod
-    async def __calculate_remained_term(cls, deadline: str) -> str:
+    def __calculate_remained_term(cls, deadline: str) -> str:
         """
         Метод считает, сколько лет, месяцев, недель и дней остаётся до истечения срока
         оплаты и представляет эту информацию в виде строки в формате
@@ -57,20 +57,20 @@ class DateNormalizer(Normalizer):
         for indx, word in enumerate(splitted_deadline):
             possible_number = splitted_deadline[indx - 1]
             if (
-                    'лет' in word.lower() or
-                    'год' in word.lower()
+                    ('лет' in word.lower() or 'год' in word.lower()) and
+                    'полгода' not in word.lower()
             ):
                 if possible_number == 'полтора':
                     continue
-                number = await cls.__get_number(possible_number=possible_number,
-                                                word_range=splitted_deadline[left:indx + 1])
+                number = cls.__get_number(possible_number=possible_number,
+                                          word_range=splitted_deadline[left:indx + 1])
                 term_dict['years'] += number
                 left = indx
             elif 'месяц' in word.lower():
                 if possible_number == 'полтора':
                     continue
-                number = await cls.__get_number(possible_number=possible_number,
-                                                word_range=splitted_deadline[left:indx + 1])
+                number = cls.__get_number(possible_number=possible_number,
+                                          word_range=splitted_deadline[left:indx + 1])
                 term_dict['months'] += number
                 left = indx
             elif (
@@ -78,8 +78,8 @@ class DateNormalizer(Normalizer):
                     'недель' in word.lower() or
                     'неделя' in word.lower()
             ):
-                number = await cls.__get_number(possible_number=possible_number,
-                                                word_range=splitted_deadline[left:indx + 1])
+                number = cls.__get_number(possible_number=possible_number,
+                                          word_range=splitted_deadline[left:indx + 1])
                 term_dict['weeks'] += number
                 left = indx
             elif (
@@ -87,14 +87,14 @@ class DateNormalizer(Normalizer):
                     'дней' in word.lower() or
                     'дня' in word.lower()
             ):
-                number = await cls.__get_number(possible_number=possible_number,
-                                                word_range=splitted_deadline[left:indx + 1])
+                number = cls.__get_number(possible_number=possible_number,
+                                          word_range=splitted_deadline[left:indx + 1])
                 term_dict['days'] += number
                 left = indx
         return '_'.join(map(str, term_dict.values()))
 
     @classmethod
-    async def __convert_word_to_number(cls, splitted_deadline: list[str]) -> int | None:
+    def __convert_word_to_number(cls, splitted_deadline: list[str]) -> int | None:
         start = 0
         was_the_number = False
         for indx, word in enumerate(splitted_deadline):
@@ -110,9 +110,9 @@ class DateNormalizer(Normalizer):
                     was_the_number = True
 
     @classmethod
-    async def __get_number(cls,
-                           possible_number: str,
-                           word_range: list[str]) -> int:
+    def __get_number(cls,
+                     possible_number: str,
+                     word_range: list[str]) -> int:
         """
         Метод получает часть строки и конвертирует её в целое число
         """
@@ -122,5 +122,5 @@ class DateNormalizer(Normalizer):
             if possible_number == 'одна':
                 # Так как фукция word_to_num() не конвертирует 'одна' в 1
                 return 1
-            number = await cls.__convert_word_to_number(splitted_deadline=word_range)
+            number = cls.__convert_word_to_number(splitted_deadline=word_range)
         return number

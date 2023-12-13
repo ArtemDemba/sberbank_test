@@ -12,7 +12,7 @@ class XMLService(Service):
     @classmethod
     async def parse(cls, tree: str) -> dict:
         dicted_data = await cls.__convert_xml_to_dict(tree)
-        await DateNormalizer.normalize(dicted_data)
+        DateNormalizer.normalize(dicted_data)
         return dicted_data
 
     @classmethod
