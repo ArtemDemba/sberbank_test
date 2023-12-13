@@ -1,21 +1,19 @@
-import json
-
-from src.parsers.json_parser import JsonHandler
+from src.handlers.json_handler import JsonHandler
 from src.normalizers.date_normalizer import DateNormalizer
 
 
 class JsonService:
     @classmethod
-    def parse_json(cls, tree: str) -> dict:
-        trees = cls.__split_trees(tree)
-        parsed_tree = JsonHandler.merge_trees(trees=trees)
-        DateNormalizer.normalize(parsed_tree)
+    async def parse_json(cls, tree: dict) -> dict:
+        trees = await cls.__split_trees(tree)
+        parsed_tree = await JsonHandler.merge_trees(trees=trees)
+        await DateNormalizer.normalize(parsed_tree)
         return parsed_tree
 
     @classmethod
-    def __split_trees(cls, tree: str) -> list[dict]:
+    async def __split_trees(cls, trees: dict) -> list[dict]:
         """
-        Метод принимает несколько деревьев в строковом формате и конвертирует их в список словарей
+        Метод принимает несколько деревьев внутри словаря, разделяет их и
+        возвращает список деревьев
         """
-        dicted_tree: dict = json.loads(tree)
-        return [tree for tree in dicted_tree.values()]
+        return [tree for tree in trees.values()]
