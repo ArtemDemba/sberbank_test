@@ -1,10 +1,8 @@
 from src.handlers.interfaces import IHandler
-from methods_profiler import profile_method
 
 
 class Handler(IHandler):
     @classmethod
-    #@profile_method(filename='merge_trees')
     def merge_trees(cls, trees: list[dict]) -> dict:
         """
         Метод, принимающий список словарей и объединяющий их в результирующий
@@ -29,7 +27,6 @@ class Handler(IHandler):
         return result_dict
 
     @staticmethod
-    #@profile_method(filename='split_tree')
     def split_tree(tree: dict) -> list[dict]:
         """
         Метод принимает несколько деревьев внутри словаря, разделяет их и
