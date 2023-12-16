@@ -15,3 +15,4 @@ async def process_tree(request: Request,
         return await service.parse(tree)
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
+

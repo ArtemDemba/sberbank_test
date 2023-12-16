@@ -3,10 +3,12 @@ from ru_word2number.w2n import word_to_num
 
 from .interfaces import Normalizer
 from src.exceptions import InvalidDateException
+from methods_profiler import profile_method
 
 
 class DateNormalizer(Normalizer):
     @classmethod
+    #@profile_method(filename='normalizer')
     def normalize(cls, tree: dict) -> None:
         """
         Нормализация дат и сроков в дереве

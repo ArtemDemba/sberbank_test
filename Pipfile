@@ -11,6 +11,8 @@ dateparser = "*"
 ru-word2number = "*"
 pytest = "*"
 pytest-asyncio = "*"
+pyinstrument = "*"
+fastapi-profiler = "*"
 
 [dev-packages]
 
