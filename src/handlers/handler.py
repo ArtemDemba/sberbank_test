@@ -3,7 +3,7 @@ from src.handlers.interfaces import IHandler
 
 class Handler(IHandler):
     @classmethod
-    def merge_trees(cls, trees: list[dict]) -> dict:
+    async def merge_trees(cls, trees: list[dict]) -> dict:
         """
         Метод, принимающий список словарей и объединяющий их в результирующий
         словарь (дерево). Если значение - словарь и такой ключ уже есть в
@@ -19,7 +19,7 @@ class Handler(IHandler):
                             isinstance(value, dict) and
                             isinstance(result_dict[key], dict)
                     ):
-                        result_dict[key] = cls.merge_trees([result_dict[key], value])
+                        result_dict[key] = await cls.merge_trees([result_dict[key], value])
                     else:
                         result_dict[key] = [result_dict[key], value]
                 else:
@@ -27,7 +27,7 @@ class Handler(IHandler):
         return result_dict
 
     @staticmethod
-    def split_tree(tree: dict) -> list[dict]:
+    async def split_tree(tree: dict) -> list[dict]:
         """
         Метод принимает несколько деревьев внутри словаря, разделяет их и
         возвращает список деревьев
