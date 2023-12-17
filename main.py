@@ -4,7 +4,7 @@ import uvicorn
 
 from src.routers.routers import process_router
 from src.middlewares import ContentTypeMiddleware
-1
+
 
 if __name__ == '__main__':
     app = FastAPI(title='Process data service')
