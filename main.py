@@ -7,7 +7,6 @@ from src.middlewares import ContentTypeMiddleware
 
 
 if __name__ == '__main__':
-
     app = FastAPI(title='Process data service')
 
     app.add_middleware(ContentTypeMiddleware)
