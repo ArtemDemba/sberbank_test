@@ -11,7 +11,7 @@ from .values_for_test import (input_dicts_for_splitting, expected_dicts_for_spli
 ))
 @pytest.mark.asyncio
 async def test_correct_splitting_dicts(input_dict, expected_output):
-    result = Handler.split_tree(input_dict)
+    result = await Handler.split_tree(input_dict)
     assert result == expected_output
 
 
@@ -20,6 +20,6 @@ async def test_correct_splitting_dicts(input_dict, expected_output):
 ))
 @pytest.mark.asyncio
 async def test_correct_merging_dicts(first_input_dict, second_input_dict, expected_output):
-    result = Handler.merge_trees([first_input_dict, second_input_dict])
+    result = await Handler.merge_trees([first_input_dict, second_input_dict])
     assert result == expected_output
 

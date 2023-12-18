@@ -12,6 +12,7 @@ from src.normalizers.date_normalizer import DateNormalizer
         ({'СрокОплаты': 'через полгода'}, {'СрокОплаты': '0_6_0_0'}),
         ({'СрокОплаты': 'полтора года двенадцать дней'}, {'СрокОплаты': '1_6_0_12'})
 ))
-def test_normalizer(need_to_normalize, normalized):
-    DateNormalizer.normalize(need_to_normalize)
+@pytest.mark.asyncio
+async def test_normalizer(need_to_normalize, normalized):
+    await DateNormalizer.normalize(need_to_normalize)
     assert need_to_normalize == normalized
